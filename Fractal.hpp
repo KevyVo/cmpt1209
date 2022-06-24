@@ -30,6 +30,9 @@ private:
     void makeJuliaFractal();
     void makeMandelbrotFractal();
     
+    void deallocateGrid();
+    void deepCopy(const Fractal&);
+    
 public:
     
     /**
@@ -66,6 +69,8 @@ public:
      * Overloaded move assignment operator
      */
     Fractal& operator=(Fractal&&);
+    
+    friend void saveToPPM(Fractal, string);
 };
 
 #endif /* Fractal_hpp */
