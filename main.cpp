@@ -26,7 +26,18 @@ int main(int argc, const char * argv[])
     return 0;
 }
 
+/**
+ * 13.) You must implement an ordinary function named testMoveConstructor() with
+ * the following prototype to construct and return an object of the Fractal class
+ *
+ * @param rows : number of rows
+ * @param cols : number of cols
+ * @param c : fractal type
+ * @return Fractal : temporary fractal object.
+ *
+ */
 Fractal testMoveConstructor(unsigned int rows, unsigned int cols, char c)
 {
-    return Fractal(rows, cols, c);
+    Fractal f(rows, cols, c);
+    return f;
 }

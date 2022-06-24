@@ -20,13 +20,25 @@ Fractal::Fractal(const Fractal& f) : rows(f.rows), cols(f.cols), grid(nullptr), 
     
     // Deep copy
     this->deepCopy(f);
+    
+    if (f.type == 'm')
+    {
+        this->makeMandelbrotFractal();
+    }
+    else if (f.type == 'j')
+    {
+        this->makeJuliaFractal();
+    }
+    else {
+        throw "Unknown fractual type is given.";
+    }
 }
 
 /**
  * Move constructor
  * @param f : r-value fractal object
  */
-Fractal::Fractal(Fractal&& f) : rows(0), cols(0), grid(nullptr), maxIter(0), type(0)
+Fractal::Fractal(Fractal&& f) : rows(f.rows), cols(f.cols), grid(nullptr), maxIter(0), type(0)
 {
     cout << "> Move constructor called..." << endl;
     
@@ -63,6 +75,18 @@ Fractal::Fractal(unsigned int r, unsigned int c, char t) : rows(r), cols(c), gri
             this->grid[i][n] = Pixel();
         }
     }
+    
+    if (t == 'm')
+    {
+        this->makeMandelbrotFractal();
+    }
+    else if (t == 'j')
+    {
+        this->makeJuliaFractal();
+    }
+    else {
+        throw "Unknown fractual type is given.";
+    }
 }
 
 Fractal::~Fractal()
@@ -76,10 +100,14 @@ Fractal::~Fractal()
  */
 void Fractal::deallocateGrid()
 {
-    for (unsigned int i = 0; i < this->rows; i++)
+    
+    if (this->grid != nullptr)
     {
-        delete[] this->grid[i];
-        this->grid[i] = nullptr;
+        for (unsigned int i = 0; i < this->rows; i++)
+        {
+            delete[] this->grid[i];
+            this->grid[i] = nullptr;
+        }
     }
     
     delete[] this->grid;
@@ -152,7 +180,6 @@ void Fractal::makeMandelbrotFractal()
  */
 const Fractal& Fractal::operator=(const Fractal& f)
 {
-    // TODO: Implement overloaded assignment operator
     if (this != &f)
     {
         this->rows = f.rows;
@@ -179,7 +206,6 @@ const Fractal& Fractal::operator=(const Fractal& f)
  */
 Fractal& Fractal::operator=(Fractal&& f)
 {
-    // TODO: Implement overloaded move assignment operator
     cout << "> Move assignment operator called..." << endl;
     
     if (this != &f)
@@ -200,7 +226,7 @@ Fractal& Fractal::operator=(Fractal&& f)
  * @param f : fractal object
  * @param name : name of the output file.
  */
-void saveToPPM(Fractal f, string name)
+void saveToPPM(Fractal& f, string name)
 {
     // TODO: Implement this function given the requirement.
     cout << "> Saving Fractal object to ASCII file..." << endl;

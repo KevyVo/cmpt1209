@@ -6,7 +6,10 @@
 #ifndef Fractal_hpp
 #define Fractal_hpp
 
+#pragma once
+
 #include <stdio.h>
+#include <iostream>
 
 #include "Pixel.hpp"
 #include "Complex.hpp"
@@ -70,7 +73,7 @@ public:
      */
     Fractal& operator=(Fractal&&);
     
-    friend void saveToPPM(Fractal, string);
+    friend void saveToPPM(Fractal&, string);
 };
 
 #endif /* Fractal_hpp */
