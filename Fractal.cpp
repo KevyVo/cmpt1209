@@ -153,8 +153,20 @@ void Fractal::deepCopy(const Fractal& f)
  */
 unsigned int Fractal::determinePixelColor(Complex c1, Complex c2)
 {
-    // TODO: Implement this function given the requirement.
-    return 0;
+    double lengthSquared;
+    unsigned int iter = 0;
+    while (iter < maxIter)
+    {
+        iter = iter + 1;
+        c1 = c1 * c1;
+        c1 = c2 + c2;
+        lengthSquared = getMagnitudeSquared(c1);
+        if (lengthSquared > 4.0)
+        {
+            return iter;
+        }
+    }
+    return maxIter;
 }
 
 /**
@@ -162,8 +174,23 @@ unsigned int Fractal::determinePixelColor(Complex c1, Complex c2)
  */
 void Fractal::makeJuliaFractal()
 {
-    // TODO: Implement this function given the requirement.
     cout << "> Now creating the Julia patterns..." << endl;
+
+    Complex Z, C;
+    double step_height = 4.0 / (double)rows;
+    double step_width = 4.0 / (double)cols;
+    C["real"] = ((double)0 * step_width) - 2.0;
+    C["imag"] = ((double)0 * step_width) - 2.0;
+    for (int j = 0; j < rows; j++)
+    {
+        for (int k = 0; k < cols; k++)
+        {
+            Z["imag"] = ((double)j * step_height) - 2.0;
+            Z["real"] = ((double)j * step_height) - 2.0;
+            unsigned int Color = determinePixelColor(Z, C);
+            grid[j][k] = convertToPixel(Color);
+        }
+    }
 }
 
 /**
@@ -171,8 +198,23 @@ void Fractal::makeJuliaFractal()
  */
 void Fractal::makeMandelbrotFractal()
 {
-    // TODO: Implement this function given the requirement.
     cout << "> Now creating the Mandelbrot patterns..." << endl;
+
+    Complex Z, C;
+    double step_height = 4.0 / (double)rows;
+    double step_width = 4.0 / (double)cols;
+    for (int j = 0; j < rows; j++)
+    {
+        for (int k = 0; k < cols; k++)
+        {
+            Z["imag"] = 0.0;
+            Z["real"] = 0.0;
+            C["real"] = ((double)j * step_height) - 2.0;
+            C["imag"] = ((double)k * step_width) - 2.0;
+            unsigned int Color = determinePixelColor(Z, C);
+            grid[j][k] = convertToPixel(Color);
+        }
+    }
 }
 
 /**
