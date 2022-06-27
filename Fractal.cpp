@@ -5,7 +5,7 @@
 
 #include "Fractal.hpp"
 
-Fractal::Fractal() : rows(0), cols(0), grid(nullptr), maxIter(0), type(NULL)
+Fractal::Fractal() : rows(0), cols(0), grid(nullptr), maxIter(512), type(NULL)
 {
     cout << "> Default constructor called..." << endl;
 }
@@ -38,7 +38,7 @@ Fractal::Fractal(const Fractal& f) : rows(f.rows), cols(f.cols), grid(nullptr), 
  * Move constructor
  * @param f : r-value fractal object
  */
-Fractal::Fractal(Fractal&& f) : rows(f.rows), cols(f.cols), grid(nullptr), maxIter(0), type(0)
+Fractal::Fractal(Fractal&& f) : rows(f.rows), cols(f.cols), grid(nullptr), maxIter(512), type(NULL)
 {
     cout << "> Move constructor called..." << endl;
     
@@ -58,11 +58,9 @@ Fractal::Fractal(Fractal&& f) : rows(f.rows), cols(f.cols), grid(nullptr), maxIt
  * @param c : number of columns
  * @param t : fractal type
  */
-Fractal::Fractal(unsigned int r, unsigned int c, char t) : rows(r), cols(c), grid(nullptr), maxIter(0), type(t)
+Fractal::Fractal(unsigned int r, unsigned int c, char t) : rows(r), cols(c), grid(nullptr), maxIter(512), type(t)
 {
     cout << "> 3-arg constructor called..." << endl;
-    
-    convertToPixel(123);
     
     // Initialize grid rows
     this->grid = new Pixel*[r];
