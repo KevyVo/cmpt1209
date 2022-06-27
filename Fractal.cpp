@@ -62,6 +62,8 @@ Fractal::Fractal(unsigned int r, unsigned int c, char t) : rows(r), cols(c), gri
 {
     cout << "> 3-arg constructor called..." << endl;
     
+    convertToPixel(123);
+    
     // Initialize grid rows
     this->grid = new Pixel*[r];
     for (unsigned int i = 0; i < r; i++)
@@ -230,4 +232,18 @@ void saveToPPM(Fractal& f, string name)
 {
     // TODO: Implement this function given the requirement.
     cout << "> Saving Fractal object to ASCII file..." << endl;
+}
+
+/**
+ * Create a Pixel object given the color value.
+ * @param color : raw color value.
+ * @return Pixel : new pixel
+ */
+Pixel convertToPixel(unsigned int color)
+{
+    unsigned int red = (color / 4) % 8;
+    unsigned int green = (color / 8) % 8;
+    unsigned int blue = color % 8;
+
+    return Pixel(red, green, blue);
 }

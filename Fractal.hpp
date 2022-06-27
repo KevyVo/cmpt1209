@@ -76,4 +76,6 @@ public:
     friend void saveToPPM(Fractal&, string);
 };
 
+Pixel convertToPixel(unsigned int);
+
 #endif /* Fractal_hpp */

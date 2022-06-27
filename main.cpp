@@ -41,17 +41,3 @@ Fractal testMoveConstructor(unsigned int rows, unsigned int cols, char c)
     Fractal f(rows, cols, c);
     return f;
 }
-
-/**
- * Create a Pixel object given the color value.
- * @param color : raw color value.
- * @return Pixel : new pixel
- */
-Pixel convertToPixel(unsigned int color)
-{
-    unsigned int red = (color / 4) % 8;
-    unsigned int green = (color / 8) % 8;
-    unsigned int blue = color % 8;
-    
-    return Pixel(red, green, blue);
-}
