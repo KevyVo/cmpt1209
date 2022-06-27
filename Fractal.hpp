@@ -36,8 +36,6 @@ private:
     void deallocateGrid();
     void deepCopy(const Fractal&);
     
-    Pixel convertToPixel(unsigned int);
-    
 public:
     
     /**

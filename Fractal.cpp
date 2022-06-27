@@ -144,19 +144,6 @@ void Fractal::deepCopy(const Fractal& f)
 }
 
 /**
- * Create a Pixel object given the color value.
- * @param color : raw color value.
- * @return Pixel : new pixel
- */
-Pixel Fractal::convertToPixel(unsigned int color)
-{
-    unsigned int red = (color / 4) % 8;
-    unsigned int green = (color / 8) % 8;
-    unsigned int blue = color % 8;
-    
-    return Pixel(red, green, blue);
-}
-/**
  * Determine the pixel color given two complex objects
  * @param c1 : first complex object
  * @param c2 : second complex object
