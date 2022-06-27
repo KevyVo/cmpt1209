@@ -6,7 +6,10 @@
 #ifndef Fractal_hpp
 #define Fractal_hpp
 
+#pragma once
+
 #include <stdio.h>
+#include <iostream>
 
 #include "Pixel.hpp"
 #include "Complex.hpp"
@@ -29,6 +32,9 @@ private:
     
     void makeJuliaFractal();
     void makeMandelbrotFractal();
+    
+    void deallocateGrid();
+    void deepCopy(const Fractal&);
     
 public:
     
@@ -66,6 +72,8 @@ public:
      * Overloaded move assignment operator
      */
     Fractal& operator=(Fractal&&);
+    
+    friend void saveToPPM(Fractal&, string);
 };
 
 #endif /* Fractal_hpp */
