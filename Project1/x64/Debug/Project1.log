@@ -1,0 +1,10 @@
+﻿  Complex.cpp
+  Fractal.cpp
+C:\Users\Kevin Vo\Documents\cmpt1209\cmpt1209\Project1\Fractal.cpp(182,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Kevin Vo\Documents\cmpt1209\cmpt1209\Project1\Fractal.cpp(184,27): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Kevin Vo\Documents\cmpt1209\cmpt1209\Project1\Fractal.cpp(204,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Kevin Vo\Documents\cmpt1209\cmpt1209\Project1\Fractal.cpp(206,27): warning C4018: '<': signed/unsigned mismatch
+  main.cpp
+  Pixel.cpp
+  Generating Code...
+  Project1.vcxproj -> C:\Users\Kevin Vo\Documents\cmpt1209\cmpt1209\Project1\x64\Debug\Project1.exe
