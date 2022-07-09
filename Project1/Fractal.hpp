@@ -10,6 +10,7 @@
 
 #include <stdio.h>
 #include <iostream>
+#include <fstream>
 
 #include "Pixel.hpp"
 #include "Complex.hpp"

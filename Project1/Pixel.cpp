@@ -64,6 +64,6 @@ unsigned int& Pixel::operator[](const char* c)
  */
 ostream& operator<<(ostream& os, const Pixel& p)
 {
-    // TODO: Implement writing the pixel to the output file.
+    os << p.red << " " << p.green << " " << p.blue << " ";
     return os;
 }

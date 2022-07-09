@@ -149,16 +149,16 @@ void Fractal::deepCopy(const Fractal& f)
  * @param c2 : second complex object
  * @return color : integer value of the color
  */
-unsigned int Fractal::determinePixelColor(Complex c1, Complex c2)
+unsigned int Fractal::determinePixelColor(Complex z, Complex c)
 {
     double lengthSquared;
     unsigned int iter = 0;
     while (iter < maxIter)
     {
         iter = iter + 1;
-        c1 = c1 * c1;
-        c1 = c2 + c2;
-        lengthSquared = getMagnitudeSquared(c1);
+        z = z * z;
+        z = z + c;
+        lengthSquared = getMagnitudeSquared(z);
         if (lengthSquared > 4.0)
         {
             return iter;
@@ -270,8 +270,30 @@ Fractal& Fractal::operator=(Fractal&& f)
  */
 void saveToPPM(Fractal& f, string name)
 {
-    // TODO: Implement this function given the requirement.
+    ofstream outFile;
+
+    outFile.open(name, ios::out | ios::binary);
+
+    if (!outFile) {
+        cout << "File : " << name << " cannot be created." << endl;
+    }
+
     cout << "> Saving Fractal object to ASCII file..." << endl;
+
+    outFile << "P3" << endl;
+    outFile << "# some comment here" << endl;
+    outFile << f.cols << " " << f.rows << endl;
+    outFile << f.maxIter << endl;
+
+    cout << "We are going into for loop" << endl;
+    for (int i = 0; i < f.rows; i++) {
+        for (int j = 0; j < f.cols; j++) {
+            outFile << f.grid[i][j];
+        }
+        outFile << endl;
+    }
+
+    outFile.close();
 }
 
 /**
@@ -281,7 +303,7 @@ void saveToPPM(Fractal& f, string name)
  */
 Pixel convertToPixel(unsigned int color)
 {
-    unsigned int red = (color / 4) % 8;
+    unsigned int red = (color / 64) % 8;
     unsigned int green = (color / 8) % 8;
     unsigned int blue = color % 8;
 

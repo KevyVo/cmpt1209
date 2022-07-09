@@ -137,6 +137,10 @@
     <ClInclude Include="Fractal.hpp" />
     <ClInclude Include="Pixel.hpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="julia.ppm" />
+    <None Include="mandelbrot.ppm" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
