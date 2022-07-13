@@ -11,14 +11,14 @@ Complex::Complex() : imag(0.0), real(0.0) {}
  * Copy constructor
  * @param c : complex object
  */
-Complex::Complex(const Complex& c) : imag(c.imag), real(c.real) {}
+Complex::Complex(const Complex& c) : real(c.real), imag(c.imag) {}
 
 /**
  * Two arguments constructor
- * @param i : imaginary number
  * @param r : real number
+ * @param i : imaginary number
  */
-Complex::Complex(double i, double r) : imag(i), real(r) {}
+Complex::Complex(double r, double i) : real(r), imag(i) {}
 
 /**
  * Destructor
@@ -57,7 +57,7 @@ double& Complex::operator[](const char* c)
  */
 const Complex operator*(const Complex& c1, const Complex& c2)
 {
-    return Complex(c1.imag * c2.imag, c1.real * c2.real);
+    return Complex((c1.real * c2.real) - (c1.imag * c2.imag), (c1.real * c2.imag) + (c1.imag * c2.real));
 }
 
 /**
@@ -67,7 +67,7 @@ const Complex operator*(const Complex& c1, const Complex& c2)
  */
 const Complex operator+(const Complex& c1, const Complex& c2)
 {
-    return Complex(c1.imag + c2.imag, c1.real + c2.real);
+    return Complex(c1.real + c2.real, c1.imag + c2.imag);
 }
 
 /**
@@ -76,5 +76,7 @@ const Complex operator+(const Complex& c1, const Complex& c2)
  */
 double getMagnitudeSquared(const Complex& c)
 {
-    return sqrt(pow(c.imag, 2) + pow(c.real, 2));
+    // magnitude: sqrt(pow(x, 2) + pow(y, 2))
+    // magnitude squared: pow(sqrt(pow(x, 2) + pow(y, 2)), 2) -> pow(x, 2) + pow(y, 2)
+    return (c.real * c.real) + (c.imag * c.imag);
 }

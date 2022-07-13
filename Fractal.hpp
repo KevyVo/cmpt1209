@@ -10,6 +10,7 @@
 
 #include <stdio.h>
 #include <iostream>
+#include <fstream>
 
 #include "Pixel.hpp"
 #include "Complex.hpp"
@@ -22,10 +23,11 @@
 class Fractal
 {
 private:
-    unsigned int cols;
     Pixel** grid;
+    
     unsigned int maxIter;
     unsigned int rows;
+    unsigned int cols;
     char type;
     
     unsigned int determinePixelColor(Complex, Complex);

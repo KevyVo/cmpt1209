@@ -50,6 +50,10 @@ Fractal::Fractal(Fractal&& f) : rows(f.rows), cols(f.cols), grid(nullptr), maxIt
     this->type = f.type;
 
     f.grid = nullptr;
+    f.rows = 0;
+    f.cols = 0;
+    f.type = NULL;
+    f.maxIter = 0;
 }
 
 /**
@@ -68,12 +72,6 @@ Fractal::Fractal(unsigned int r, unsigned int c, char t) : rows(r), cols(c), gri
     {
         // Initialize grid columns
         this->grid[i] = new Pixel[c];
-        
-        for (unsigned int n = 0; n < c; n++)
-        {
-            // Instantiate the Pixel object at ith row and nth column position.
-            this->grid[i][n] = Pixel();
-        }
     }
     
     if (t == 'm')
@@ -145,28 +143,30 @@ void Fractal::deepCopy(const Fractal& f)
 
 /**
  * Determine the pixel color given two complex objects
- * @param c1 : first complex object
- * @param c2 : second complex object
+ * @param z : first complex object
+ * @param c : second complex object
  * @return color : integer value of the color
  */
-unsigned int Fractal::determinePixelColor(Complex c1, Complex c2)
+unsigned int Fractal::determinePixelColor(Complex z, Complex c)
 {
     double lengthSquared;
     unsigned int iter = 0;
-    while (iter < maxIter)
+    
+    while (iter < this->maxIter)
     {
         iter = iter + 1;
-        c1 = c1 * c1;
-        c1 = c2 + c2;
-        lengthSquared = getMagnitudeSquared(c1);
+        z = z * z;
+        z = z + c;
+        lengthSquared = getMagnitudeSquared(z);
+        
         if (lengthSquared > 4.0)
         {
             return iter;
         }
     }
-    return maxIter;
+    
+    return this->maxIter;
 }
-
 /**
  * Make Julia fractal pattern
  */
@@ -175,17 +175,20 @@ void Fractal::makeJuliaFractal()
     cout << "> Now creating the Julia patterns..." << endl;
 
     Complex Z, C;
-    double step_height = 4.0 / (double)rows;
-    double step_width = 4.0 / (double)cols;
-    C["real"] = ((double)0 * step_width) - 2.0;
-    C["imag"] = ((double)0 * step_width) - 2.0;
-    for (int j = 0; j < rows; j++)
+
+    double step_height = 4.0 / (double)this->rows;
+    double step_width = 4.0 / (double)this->cols;
+
+    C["real"] = ((double)1 * step_width) - 2.0;
+    C["imag"] = ((double)1 * step_width) - 2.0;
+
+    for (int j = 0; j < this->rows; j++)
     {
-        for (int k = 0; k < cols; k++)
+        for (int k = 0; k < this->cols; k++)
         {
             Z["imag"] = ((double)j * step_height) - 2.0;
             Z["real"] = ((double)j * step_height) - 2.0;
-            unsigned int Color = determinePixelColor(Z, C);
+            unsigned int Color = this->determinePixelColor(Z, C);
             grid[j][k] = convertToPixel(Color);
         }
     }
@@ -199,18 +202,24 @@ void Fractal::makeMandelbrotFractal()
     cout << "> Now creating the Mandelbrot patterns..." << endl;
 
     Complex Z, C;
-    double step_height = 4.0 / (double)rows;
-    double step_width = 4.0 / (double)cols;
-    for (int j = 0; j < rows; j++)
+    
+    double step_height = 4.0 / (double) this->rows;
+    double step_width = 4.0 / (double) this->cols;
+    
+//    cout << step_height << endl;
+//    cout << step_width << endl;
+    
+    for (unsigned int j = 0; j < this->rows; j++)
     {
-        for (int k = 0; k < cols; k++)
+        for (unsigned int k = 0; k < this->cols; k++)
         {
             Z["imag"] = 0.0;
             Z["real"] = 0.0;
             C["real"] = ((double)j * step_height) - 2.0;
             C["imag"] = ((double)k * step_width) - 2.0;
-            unsigned int Color = determinePixelColor(Z, C);
-            grid[j][k] = convertToPixel(Color);
+
+            unsigned int Color = this->determinePixelColor(Z, C);
+            this->grid[j][k] = convertToPixel(Color);
         }
     }
 }
@@ -270,8 +279,32 @@ Fractal& Fractal::operator=(Fractal&& f)
  */
 void saveToPPM(Fractal& f, string name)
 {
-    // TODO: Implement this function given the requirement.
+    ofstream outFile;
+
+    outFile.open(name, ios::out | ios::binary);
+
+    if (!outFile) {
+        cout << "File : " << name << " cannot be created." << endl;
+    }
+
     cout << "> Saving Fractal object to ASCII file..." << endl;
+
+    outFile << "P3" << endl;
+    outFile << "# some comment here" << endl;
+    outFile << f.cols << " " << f.rows << endl;
+    outFile << 7 << endl;
+
+    for (unsigned int i = 0; i < f.rows; i++)
+    {
+        for (unsigned int j = 0; j < f.cols; j++)
+        {
+            outFile << f.grid[i][j] << " ";
+        }
+        
+        outFile << endl;
+    }
+
+    outFile.close();
 }
 
 /**
@@ -281,7 +314,7 @@ void saveToPPM(Fractal& f, string name)
  */
 Pixel convertToPixel(unsigned int color)
 {
-    unsigned int red = (color / 4) % 8;
+    unsigned int red = (color / 64) % 8;
     unsigned int green = (color / 8) % 8;
     unsigned int blue = color % 8;
 
