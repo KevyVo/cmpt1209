@@ -28,12 +28,22 @@ private:
     unsigned int maxIter;
     unsigned int rows;
     unsigned int cols;
+    
     char type;
+    
+    double real_step;
+    double imag_step;
     
     unsigned int determinePixelColor(Complex, Complex);
     
     void makeJuliaFractal();
     void makeMandelbrotFractal();
+    
+    /**
+     * Bonus part
+     */
+    void makeJuliaFractal(double, double);
+    void generateMultipleJuliaFractal();
     
     void deallocateGrid();
     void deepCopy(const Fractal&);
@@ -56,9 +66,14 @@ public:
     Fractal(Fractal&&);
     
     /**
-     * Two arguments constructor
+     * Three arguments constructor
      */
     Fractal(unsigned int, unsigned int, char);
+    
+    /**
+     * Four arguments constructor
+     */
+    Fractal(unsigned int, unsigned int, char, double, double);
     
     /**
      * Destructor

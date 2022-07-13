@@ -29,6 +29,11 @@ Fractal::Fractal(const Fractal& f) : rows(f.rows), cols(f.cols), grid(nullptr), 
     {
         this->makeJuliaFractal();
     }
+    // b as in bonus.
+    else if (f.type == 'b')
+    {
+        this->makeJuliaFractal(-0.1, 0.1);
+    }
     else {
         throw "Unknown fractual type is given.";
     }
@@ -82,6 +87,47 @@ Fractal::Fractal(unsigned int r, unsigned int c, char t) : rows(r), cols(c), gri
     else if (t == 'j')
     {
         this->makeJuliaFractal();
+    }
+    else if (t == 'b')
+    {
+        this->makeJuliaFractal(this->real_step, this->imag_step);
+    }
+    else {
+        throw "Unknown fractual type is given.";
+    }
+}
+
+/**
+ * Five arguments constructor
+ * @param r : number of rows
+ * @param c : number of columns
+ * @param t : fractal type
+ * @param r_s : real step
+ * @param i_s : imaginary step
+ */
+Fractal::Fractal(unsigned int r, unsigned int c, char t, double r_s, double i_s) : rows(r), cols(c), grid(nullptr), maxIter(512), type(t), real_step(r_s), imag_step(i_s)
+{
+    cout << "> 3-arg constructor called..." << endl;
+    
+    // Initialize grid rows
+    this->grid = new Pixel*[r];
+    for (unsigned int i = 0; i < r; i++)
+    {
+        // Initialize grid columns
+        this->grid[i] = new Pixel[c];
+    }
+    
+    if (t == 'm')
+    {
+        this->makeMandelbrotFractal();
+    }
+    else if (t == 'j')
+    {
+        this->makeJuliaFractal();
+    }
+    else if (t == 'b')
+    {
+        this->makeJuliaFractal(this->real_step, this->imag_step);
     }
     else {
         throw "Unknown fractual type is given.";
@@ -168,6 +214,7 @@ unsigned int Fractal::determinePixelColor(Complex z, Complex c)
     
     return this->maxIter;
 }
+
 /**
  * Make Julia fractal pattern
  */
@@ -191,7 +238,41 @@ void Fractal::makeJuliaFractal()
             Z["real"] = ((double)k * step_width) - 2.0;
             
             unsigned int Color = this->determinePixelColor(Z, C);
-            grid[j][k] = convertToPixel(Color);
+            this->grid[j][k] = convertToPixel(Color);
+        }
+    }
+}
+
+/**
+ * Make dynamic julia fractal pattern given the factor and step
+ */
+void Fractal::makeJuliaFractal(double r_step, double i_step)
+{
+    this->real_step = r_step;
+    this->imag_step = i_step;
+    
+    cout << "> Bonus: Now creating dynamic Julia patterns..." << endl;
+
+    Complex Z, C;
+
+    double step_height = 4.0 / (double)this->rows;
+    double step_width = 4.0 / (double)this->cols;
+    
+    C["real"] = -0.8;
+    C["imag"] = 0.156;
+    
+    for (unsigned int j = 0; j < this->rows; j++)
+    {
+        for (unsigned int k = 0; k < this->cols; k++)
+        {
+            Z["imag"] = ((double)j * step_height) - 2.0;
+            Z["real"] = ((double)k * step_width) - 2.0;
+        
+            Z["real"] *= this->real_step;
+            Z["imag"] *= this->imag_step;
+            
+            unsigned int Color = this->determinePixelColor(Z, C);
+            this->grid[j][k] = convertToPixel(Color);
         }
     }
 }
@@ -207,9 +288,6 @@ void Fractal::makeMandelbrotFractal()
     
     double step_height = 4.0 / (double) this->rows;
     double step_width = 4.0 / (double) this->cols;
-    
-//    cout << step_height << endl;
-//    cout << step_width << endl;
     
     for (unsigned int j = 0; j < this->rows; j++)
     {

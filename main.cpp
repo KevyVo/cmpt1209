@@ -17,11 +17,23 @@ int main(int argc, const char * argv[])
     Fractal m1(768U, 1024U, 'm'), j1(768U, 1024U, 'j'), m2, j2;
     saveToPPM(m1, "mandelbrot.ppm");
     saveToPPM(j1, "julia.ppm");
-    
+
     m2 = Fractal(m1);
     j2 = testMoveConstructor(600U, 800U, 'j');
 
     saveToPPM(j2, "julia_2.ppm");
+
+    double r_step = 0.0;
+    double i_step = 0.0;
+    
+    for (int i = 0; i < 256; i++)
+    {
+        Fractal bonus(768U, 1024U, 'b', r_step, i_step);
+        saveToPPM(bonus, "bonus-" + to_string(i) + ".ppm");
+        
+        r_step += 0.0002;
+        i_step += -0.0001;
+    }
 
     return 0;
 }
