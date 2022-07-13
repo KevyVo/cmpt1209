@@ -72,6 +72,7 @@ Fractal::Fractal(unsigned int r, unsigned int c, char t) : rows(r), cols(c), gri
     {
         // Initialize grid columns
         this->grid[i] = new Pixel[c];
+
     }
     
     if (t == 'm')
@@ -178,16 +179,17 @@ void Fractal::makeJuliaFractal()
 
     double step_height = 4.0 / (double)this->rows;
     double step_width = 4.0 / (double)this->cols;
-
-    C["real"] = ((double)1 * step_width) - 2.0;
-    C["imag"] = ((double)1 * step_width) - 2.0;
-
-    for (int j = 0; j < this->rows; j++)
+    
+    C["real"] = -0.8;
+    C["imag"] = 0.156;
+    
+    for (unsigned int j = 0; j < this->rows; j++)
     {
-        for (int k = 0; k < this->cols; k++)
+        for (unsigned int k = 0; k < this->cols; k++)
         {
             Z["imag"] = ((double)j * step_height) - 2.0;
-            Z["real"] = ((double)j * step_height) - 2.0;
+            Z["real"] = ((double)k * step_width) - 2.0;
+            
             unsigned int Color = this->determinePixelColor(Z, C);
             grid[j][k] = convertToPixel(Color);
         }
